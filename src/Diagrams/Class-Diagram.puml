@@ -1,0 +1,95 @@
+@startuml CliniqueClass
+title Diagramme de Classes - Modèle Entités JPA
+
+' Enum pour le statut de la consultation
+enum StatutConsultation {
+    RESERVEE
+    VALIDEE
+    ANNULEE
+    TERMINEE
+}
+
+' Classe abstraite
+abstract class Personne {
+    # nom : String
+    # prenom : String
+    # email : String
+    # motDePasse : String
+    + getNomComplet()
+}
+
+class Patient {
+    + idPatient : Long
+    --
+    + poids : Double
+    + taille : Double
+    - consultations : List<Consultation>
+    --
+    + consulterHistorique()
+    + reserverConsultation()
+}
+
+class Admin {
+    + idAdmin : Long
+    --
+    --
+    + superviserConsultations()
+    + gererDepartements()
+}
+
+class Docteur {
+    + idDocteur : Long
+    - departement : Departement
+    --
+    + specialite : String
+    + planning : List<Consultation>
+    --
+    + validerReservation(c: Consultation)
+    + refuserReservation(c: Consultation)
+}
+
+class Departement {
+    + idDepartement : Long
+    - salles : List<Salle>
+    - docteurs : List<Docteur>
+    --
+    + nom : String
+}
+
+class Salle {
+    + idSalle : Long
+    --
+    + nomSalle : String
+    + capacite : Integer
+    + creneauxOccupes : List<LocalDateTime>
+    --
+    + verifierDisponibilite(dateTime: LocalDateTime) : Boolean
+}
+
+class Consultation {
+    + idConsultation : Long
+    --
+    + date : LocalDate
+    + heure : LocalTime
+    + statut : StatutConsultation
+    + compteRendu : Text
+    --
+    + definirCompteRendu(cr: String)
+    + annuler()
+}
+
+' Relations d'héritage
+Personne <|-- Patient
+Personne <|-- Docteur
+Personne <|-- Admin
+
+' Relations entre classes
+Patient "1" -- "1..*" Consultation : suit
+
+Docteur "1" -- "0..*" Consultation : réalise
+
+Salle "1..*" -- "1" Departement : contient
+
+Departement "1" -- "0..*" Docteur : regroupe
+
+@enduml

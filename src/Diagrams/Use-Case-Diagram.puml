@@ -1,0 +1,72 @@
+@startuml CliniqueUseCase
+title Diagramme de Cas d'Utilisation - Digital Hospital
+
+left to right direction
+
+actor Patient
+actor Docteur
+actor Administrateur as Admin
+
+rectangle SystèmeHopitalDigitale {
+    usecase UC_CreerCompte as "Créer un compte"
+    usecase UC_ModifierCompte as "Modifer un compte"
+    usecase UC_ConsulterDocteurs as "Consulter Docteurs (par Dept)"
+    usecase UC_ReserverConsultation as "Réserver Consultation"
+    usecase UC_ModifierReservation as "Modifier Réservation"
+    usecase UC_ConsulterHistoriquePatient as "Consulter Historique Personnel"
+
+    usecase UC_ConsulterPlanning as "Consulter Planning"
+    usecase UC_GererReservation as "Valider/Refuser Réservation"
+    usecase UC_SaisirCompteRendu as "Saisir Compte Rendu (Diagnostic/Traitement)"
+    usecase UC_MAJStatutConsultation as "Mettre à jour Statut Consultation"
+    usecase UC_AccederDossierPatient as "Accéder Dossier Patient"
+
+    usecase UC_GererDepartements as "Gérer Départements"
+    usecase UC_GererDocteurs as "Gérer Docteurs"
+    usecase UC_GererSalles as "Gérer Salles & Créneaux"
+    usecase UC_SuperviserConsultations as "Superviser Toutes Consultations"
+    usecase UC_GenererStatistiques as "Générer Statistiques Globales"
+
+    Patient -- (UC_CreerCompte)
+    Patient -- (UC_ModifierCompte)
+    (UC_ModifierCompte) .> (UC_Authentification) : <<include>>
+    Patient -- (UC_ConsulterDocteurs)
+    Patient -- (UC_ReserverConsultation)
+    Patient -- (UC_ModifierReservation)
+    Patient -- (UC_ConsulterHistoriquePatient)
+
+    Docteur -- (UC_ConsulterPlanning)
+    Docteur -- (UC_GererReservation)
+    Docteur -- (UC_SaisirCompteRendu)
+    (UC_SaisirCompteRendu) .> (UC_MAJStatutConsultation) : <<include>>
+    Docteur -- (UC_MAJStatutConsultation)
+    Docteur -- (UC_AccederDossierPatient)
+
+    Admin -- (UC_GererDepartements)
+    Admin -- (UC_GererDocteurs)
+    Admin -- (UC_GererSalles)
+    Admin -- (UC_SuperviserConsultations)
+    Admin -- (UC_GenererStatistiques)
+
+    usecase UC_Authentification as "authentifier"
+
+
+    (UC_Authentification) <. (UC_ConsulterPlanning) : <<include>>
+    (UC_Authentification) <. (UC_AccederDossierPatient) : <<include>>
+    (UC_Authentification) <. (UC_ModifierReservation) : <<include>>
+    (UC_Authentification) <. (UC_GenererStatistiques) : <<include>>
+    (UC_Authentification) <. (UC_SuperviserConsultations) : <<include>>
+    (UC_Authentification) <. (UC_SaisirCompteRendu) : <<include>>
+    (UC_Authentification) <. (UC_GererSalles) : <<include>>
+    (UC_Authentification) <. (UC_GererDocteurs) : <<include>>
+    (UC_Authentification) <. (UC_MAJStatutConsultation) : <<include>>
+    (UC_Authentification) <. (UC_ConsulterHistoriquePatient) : <<include>>
+    (UC_Authentification) <. (UC_ConsulterDocteurs) : <<include>>
+    (UC_Authentification) <. (UC_ReserverConsultation) : <<include>>
+    (UC_Authentification) <. (UC_GererDepartements) : <<include>>
+
+
+
+}
+
+@enduml
