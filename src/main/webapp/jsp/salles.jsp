@@ -33,6 +33,26 @@
     <div>${s.nomSalle} (capacité: ${s.capacite}) - ${s.departement.nom}</div>
 </c:forEach>
 
+
+<c:forEach var="s" items="${salles}">
+    <form action="admin" method="post" style="margin-bottom: 10px;">
+        <input type="hidden" name="idSalle" value="${s.idSalle}"/>
+
+        <input type="text" name="nomSalle" value="${s.nomSalle}" required/>
+        <input type="number" name="capacite" value="${s.capacite}" required/>
+
+        <select name="departementId" required>
+            <c:forEach var="d" items="${departements}">
+                <option value="${d.idDepartement}" <c:if test="${d.idDepartement == s.departement.idDepartement}">selected</c:if>>${d.nom}</option>
+            </c:forEach>
+        </select>
+
+        <button type="submit" name="action" value="updateSalle">Modifier</button>
+        <button type="submit" name="action" value="deleteSalle">Supprimer</button>
+    </form>
+</c:forEach>
+
+
 <p><a href="admin">← Retour Dashboard</a></p>
 </body>
 </html>

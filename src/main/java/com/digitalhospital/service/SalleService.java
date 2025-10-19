@@ -27,6 +27,10 @@ public class SalleService {
         salleDAO.delete(id);
     }
 
+    public Salle findById(Long id) {
+        return salleDAO.findById(id);
+    }
+
     public List<Salle> listerSallesParDepartement(Long idDepartement) {
         return salleDAO.findByDepartementId(idDepartement);
     }

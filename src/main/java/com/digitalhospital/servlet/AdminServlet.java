@@ -67,6 +67,7 @@ public class AdminServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
+        // ----- DEPARTEMENTS -----
         if ("addDepartement".equalsIgnoreCase(action)) {
             String nom = request.getParameter("nom");
             Departement dep = new Departement();
@@ -78,6 +79,25 @@ public class AdminServlet extends HttpServlet {
             }
             response.sendRedirect("admin?action=departements");
 
+        } else if ("updateDepartement".equalsIgnoreCase(action)) {
+            Long id = Long.parseLong(request.getParameter("idDepartement"));
+            String nom = request.getParameter("nom");
+            Departement dep = departementService.findById(id);
+            if (dep != null) {
+                try {
+                    departementService.modifierDepartement(dep.getIdDepartement(), nom);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            response.sendRedirect("admin?action=departements");
+
+        } else if ("deleteDepartement".equalsIgnoreCase(action)) {
+            Long id = Long.parseLong(request.getParameter("idDepartement"));
+            departementService.supprimerDepartement(id);
+            response.sendRedirect("admin?action=departements");
+
+            // ----- DOCTEURS -----
         } else if ("addDocteur".equalsIgnoreCase(action)) {
             String nom = request.getParameter("nom");
             String prenom = request.getParameter("prenom");
@@ -85,8 +105,8 @@ public class AdminServlet extends HttpServlet {
             String mdp = request.getParameter("motDePasse");
             String specialite = request.getParameter("specialite");
             Long depId = Long.parseLong(request.getParameter("departementId"));
-
             Departement dep = departementService.findById(depId);
+
             Docteur docteur = new Docteur();
             docteur.setNom(nom);
             docteur.setPrenom(prenom);
@@ -94,27 +114,64 @@ public class AdminServlet extends HttpServlet {
             docteur.setMotDePasse(mdp);
             docteur.setSpecialite(specialite);
             docteur.setDepartement(dep);
-
             docteurService.save(docteur);
             response.sendRedirect("admin?action=docteurs");
 
+        } else if ("updateDocteur".equalsIgnoreCase(action)) {
+            Long id = Long.parseLong(request.getParameter("idDocteur"));
+            Docteur docteur = docteurService.findById(id);
+            if (docteur != null) {
+                docteur.setNom(request.getParameter("nom"));
+                docteur.setPrenom(request.getParameter("prenom"));
+                docteur.setEmail(request.getParameter("email"));
+                docteur.setSpecialite(request.getParameter("specialite"));
+                Long depId = Long.parseLong(request.getParameter("departementId"));
+                docteur.setDepartement(departementService.findById(depId));
+                docteurService.update(docteur);
+            }
+            response.sendRedirect("admin?action=docteurs");
+
+        } else if ("deleteDocteur".equalsIgnoreCase(action)) {
+            Long id = Long.parseLong(request.getParameter("idDocteur"));
+            docteurService.delete(id);
+            response.sendRedirect("admin?action=docteurs");
+
+            // ----- SALLES -----
         } else if ("addSalle".equalsIgnoreCase(action)) {
             String nomSalle = request.getParameter("nomSalle");
             Integer capacite = Integer.parseInt(request.getParameter("capacite"));
             Long depId = Long.parseLong(request.getParameter("departementId"));
-
             Departement dep = departementService.findById(depId);
-            Salle salle = new Salle();
-            salle.setNomSalle(nomSalle);
-            salle.setCapacite(capacite);
-            salle.setDepartement(dep);
 
+            Salle salle = new Salle();
             try {
-                salleService.ajouterSalle(salle.getNomSalle(), salle.getCapacite(), salle.getDepartement());
+                salleService.ajouterSalle(nomSalle, capacite, dep);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             response.sendRedirect("admin?action=salles");
+
+        } else if ("updateSalle".equalsIgnoreCase(action)) {
+            Long id = Long.parseLong(request.getParameter("idSalle"));
+            Salle salle = salleService.findById(id);
+            if (salle != null) {
+                String nomSalle = request.getParameter("nomSalle");
+                Integer capacite = Integer.valueOf(request.getParameter("capacite"));
+                Long depId = Long.parseLong(request.getParameter("departementId"));
+                salle.setDepartement(departementService.findById(depId));
+                try {
+                    salleService.modifierSalle(id, nomSalle, capacite);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            response.sendRedirect("admin?action=salles");
+
+        } else if ("deleteSalle".equalsIgnoreCase(action)) {
+            Long id = Long.parseLong(request.getParameter("idSalle"));
+            salleService.supprimerSalle(id);
+            response.sendRedirect("admin?action=salles");
         }
     }
+
 }

@@ -25,6 +25,15 @@
     <p>${d.nom}</p>
 </c:forEach>
 
+<c:forEach var="d" items="${departements}">
+    <form action="admin" method="post" style="margin-bottom: 10px;">
+        <input type="hidden" name="idDepartement" value="${d.idDepartement}"/>
+        <input type="text" name="nom" value="${d.nom}" required/>
+        <button type="submit" name="action" value="updateDepartement">Modifier</button>
+        <button type="submit" name="action" value="deleteDepartement">Supprimer</button>
+    </form>
+</c:forEach>
+
 <p><a href="admin">← Retour Dashboard</a></p>
 </body>
 </html>
