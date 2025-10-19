@@ -14,7 +14,7 @@ import jakarta.persistence.Persistence;
 public class JPAUtil {
 
 
-    private static final String PERSISTENCE_UNIT_NAME = "cliniquePU";
+    private static final String PERSISTENCE_UNIT_NAME = "myJPAUnit";
     private static EntityManagerFactory emf;
 
 

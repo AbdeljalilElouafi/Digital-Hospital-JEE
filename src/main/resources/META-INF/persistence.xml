@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
+             version="3.2">
+    <persistence-unit name="myJPAUnit" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>com.digitalhospital.model.User</class>
+        <class>com.digitalhospital.model.Patient</class>
+        <class>com.digitalhospital.model.Consultation</class>
+        <class>com.digitalhospital.model.Salle</class>
+        <class>com.digitalhospital.model.Departement</class>
+        <class>com.digitalhospital.model.Admin</class>
+        <class>com.digitalhospital.model.Docteur</class>
+        <class>com.digitalhospital.model.Personne</class>
+
+        <properties>
+            <!-- mysql Database -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/digital_hospital_db"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <!-- mysql Dialect -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Désactiver Bean Validation -->
+            <property name="jakarta.persistence.validation.mode" value="NONE"/>
+            <property name="hibernate.validator.apply_to_ddl" value="false"/>
+            <property name="hibernate.validator.autoregister" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>

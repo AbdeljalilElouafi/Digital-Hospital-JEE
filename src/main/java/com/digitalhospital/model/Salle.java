@@ -24,7 +24,7 @@ public class Salle {
     @Column(name = "creneau", columnDefinition = "TIMESTAMP")
     private List<LocalDateTime> creneauxOccupes = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "departement_id")
     private Departement departement;
 
