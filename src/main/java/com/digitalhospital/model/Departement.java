@@ -19,11 +19,11 @@ public class Departement {
     private String nom;
 
 
-    @OneToMany(mappedBy = "departement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "departement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Salle> salles = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "departement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "departement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Docteur> docteurs = new ArrayList<>();
 
 

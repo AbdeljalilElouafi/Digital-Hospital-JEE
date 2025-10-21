@@ -44,6 +44,57 @@ public class PatientServlet extends HttpServlet {
             session.invalidate();
             response.sendRedirect("auth?action=login");
         }
+
+        else if ("getDocteursByDepartement".equalsIgnoreCase(action)) {
+            String depIdStr = request.getParameter("departementId");
+            if (depIdStr == null || depIdStr.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Missing departementId");
+                return;
+            }
+
+            Long depId = Long.parseLong(depIdStr);
+            List<Docteur> docteurs = docteurService.findByDepartement(depId);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            StringBuilder json = new StringBuilder("[");
+            for (int i = 0; i < docteurs.size(); i++) {
+                Docteur d = docteurs.get(i);
+                json.append(String.format("{\"id\":%d,\"nom\":\"%s\",\"prenom\":\"%s\"}",
+                        d.getIdPersonne(), d.getNom(), d.getPrenom()));
+                if (i < docteurs.size() - 1) json.append(",");
+            }
+            json.append("]");
+            response.getWriter().write(json.toString());
+            return;
+        } else if ("getDisponibilitesByDocteur".equalsIgnoreCase(action)) {
+            String docIdStr = request.getParameter("docteurId");
+            if (docIdStr == null || docIdStr.isBlank()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("Missing docteurId");
+                return;
+            }
+
+            Long docteurId = Long.parseLong(docIdStr);
+            List<String> dispos = consultationService.getDisponibilitesByDocteur(docteurId);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            StringBuilder json = new StringBuilder("[");
+            for (int i = 0; i < dispos.size(); i++) {
+                json.append("\"").append(dispos.get(i)).append("\"");
+                if (i < dispos.size() - 1) json.append(",");
+            }
+            json.append("]");
+            response.getWriter().write(json.toString());
+            return;
+        }
+
+
+
     }
 
     @Override

@@ -27,4 +27,9 @@ public class DocteurService {
         Docteur d = docteurDAO.findById(id);
         if (d != null) docteurDAO.delete(d.getIdPersonne());
     }
+
+    public List<Docteur> findByDepartement(Long depId) {
+        return docteurDAO.findByDepartement(depId);
+    }
+
 }

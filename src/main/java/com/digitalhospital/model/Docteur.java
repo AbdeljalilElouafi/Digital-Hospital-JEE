@@ -10,11 +10,11 @@ public class Docteur extends Personne {
 
     private String specialite;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "departement_id")
     private Departement departement;
 
-    @OneToMany(mappedBy = "docteur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "docteur", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Consultation> planning = new ArrayList<>();
 
     public Docteur() {

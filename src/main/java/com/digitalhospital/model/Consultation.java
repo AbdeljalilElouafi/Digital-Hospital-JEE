@@ -55,7 +55,7 @@ public class Consultation {
 
 
     public Consultation() {
-        this.statut = StatutConsultation.RESERVEE; // default when created via reservation
+        this.statut = StatutConsultation.RESERVEE;
     }
 
 

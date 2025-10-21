@@ -71,6 +71,31 @@ public class ConsultationService {
         }
     }
 
+    public List<String> getDisponibilitesByDocteur(Long docteurId) {
+        Docteur docteur = docteurDAO.findById(docteurId);
+        List<Consultation> consultations = consultationDAO.findByDocteur(docteur);
+
+        // from 9 to 17h seperated to each 30 minutes
+        List<String> allSlots = new java.util.ArrayList<>();
+        LocalDate today = LocalDate.now();
+        for (int d = 0; d < 7; d++) { // 7 days
+            LocalDate date = today.plusDays(d);
+            for (int h = 9; h < 17; h++) {
+                allSlots.add(date + " " + String.format("%02d:00", h));
+                allSlots.add(date + " " + String.format("%02d:30", h));
+            }
+        }
+
+        // remove occupied slots
+        for (Consultation c : consultations) {
+            String slot = c.getDate() + " " + c.getHeure().toString();
+            allSlots.remove(slot);
+        }
+
+        return allSlots;
+    }
+
+
     public void ajouterCompteRendu(Long id, String cr) {
         Consultation c = consultationDAO.findById(id);
         if (c != null && c.getStatut() == StatutConsultation.VALIDEE) {

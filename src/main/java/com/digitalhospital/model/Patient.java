@@ -11,7 +11,7 @@ public class Patient extends Personne {
     private Double poids;
     private Double taille;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Consultation> consultations = new ArrayList<>();
 
     public Patient() {
